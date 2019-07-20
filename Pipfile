@@ -7,6 +7,8 @@ verify_ssl = true
 
 [packages]
 camb = "*"
+matplotlib = "*"
+numpy = "*"
 
 [requires]
 python_version = "2.7"
