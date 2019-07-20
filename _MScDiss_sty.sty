@@ -1,0 +1,56 @@
+% % % % % % % % % % % % % % % % % % % 
+%  Jim Emerson - _MScDiss_sty.sty
+%  Formatting package for MSc Dissertation
+% % % % % % % % % % % % % % % % % % % 
+% Usage:
+% \usepackage[]{_MSCAstroDiss_sty}
+%
+% 
+% % % % % % % % % % % % % 
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{_MScDiss_sty}[2015/02/12 Definitions for QMUL MSc Astrophysics Dissertation]
+% % % % % % % % % % % % % % % 
+% Packages
+% % % % % % % % % % % % % % %
+\RequirePackage{graphicx}
+\RequirePackage{color}
+% \RequirePackage{times}
+\RequirePackage{setspace}
+\RequirePackage{verbatim}
+% \usepackage{rotating}
+% \usepackage{psfrag}
+\pagestyle{plain}
+\RequirePackage{fancyhdr}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsbsy}
+\RequirePackage{mathrsfs}
+\RequirePackage{makeidx}
+\RequirePackage[sort&compress]{natbib}
+\RequirePackage{snapshot}
+\RequirePackage[pdftex,
+colorlinks,citecolor=blue,linkcolor=blue,urlcolor=blue,hyperfootnotes=false,linktocpage,breaklinks=true]{hyperref} %bookmarks=true, dvips, dvipdfm
+% {\newcommand{\hypersetup}[1]{}
+%\newcommand{\url}[1]{#1}}
+\RequirePackage{subfig}% \captionsetup{lofdepth=2}
+\RequirePackage{booktabs}
+
+% % % % % % % % % % 
+% fancyhdr settings
+% % % % % % % % % % 
+%%%% pagestyle should be indicated after the margins according to the 
+%%%% fancyheading instructions that come with the package
+\pagestyle{plain}
+
+\renewcommand{\chaptermark}[1]{\def\chapternamenow{#1}
+               \markright{\thechapter :\ #1} }
+\renewcommand{\sectionmark}[1]{\markright{\thesection :\  
+%\chapternamenow \ ---\
+ #1}}
+\lhead[\fancyplain{}{\thepage}] {\fancyplain{}{\rightmark}}
+\chead[\fancyplain{}{}]                {\fancyplain{}{}}
+\rhead[\fancyplain{}{\leftmark}] {\fancyplain{}{\thepage}}
+\lfoot[\fancyplain{}{}]                    {\fancyplain{}{}}
+\cfoot[\fancyplain{\thepage}{}]  {\fancyplain{\thepage}{}}
+\rfoot[\fancyplain{} {}]                  {\fancyplain{}{\CVSrevision}}
+
