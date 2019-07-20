@@ -1,0 +1,384 @@
+<script language='JavaScript'><!--
+function PhysParamsShowHide(form) {
+  if (form.use_physical.value == "T") {
+    document.getElementById('mainparams2a').style.display = 'block';
+    document.getElementById('mainparams2b').style.display = 'none';
+  } else {
+    document.getElementById('mainparams2a').style.display = 'none';
+    document.getElementById('mainparams2b').style.display = 'block';
+  }
+}
+
+function ReionizationShowHide(form, mod) {
+  if (mod == "R") {
+    if (form.reionization.value == "T") {
+      document.getElementById('reionizationcomp').style.display = 'block';
+    } else {
+      document.getElementById('reionizationcomp').style.display = 'none';
+    }
+  } else if (mod == "O") {
+    if (form.re_use_optical_depth.value == "T") {
+      document.getElementById('re_opt_depth_yes').style.display = 'block';
+      document.getElementById('re_opt_depth_no').style.display  = 'none';
+    } else {
+      document.getElementById('re_opt_depth_yes').style.display = 'none';
+      document.getElementById('re_opt_depth_no').style.display  = 'block';
+    }
+  }
+}
+
+function BispectrumShowHide(form) {
+  if ((form.do_lensing_bispectrum.value == "T") || (form.do_primordial_bispectrum.value == "T")) {
+    document.getElementById('bispectruma').style.display = 'block';
+    document.getElementById('bispectrumb').style.display = 'block';
+  } else {
+    document.getElementById('bispectruma').style.display = 'none';
+    document.getElementById('bispectrumb').style.display = 'none';
+  }
+}
+
+function InitialConditionShowHide(form) {
+  if (form.initial_condition.value == "0") {
+    document.getElementById('otherperturb').style.display = 'block';
+  } else {
+    document.getElementById('otherperturb').style.display = 'none';
+  }
+}
+
+function validateActions(form, mod) {
+  if (form.get_vector_cls.checked && (form.get_scalar_cls.checked || form.get_tensor_cls.checked)) {
+    alert("Vector Cl's are incompatible with Scalar and Tensor Cl's!");
+    if (mod == "S") form.get_scalar_cls.checked = ! form.get_scalar_cls.checked;
+    if (mod == "T") form.get_tensor_cls.checked = ! form.get_tensor_cls.checked;
+    if (mod == "V") form.get_vector_cls.checked = ! form.get_vector_cls.checked;
+  } else if (form.get_transfer.checked && ! (form.get_scalar_cls.checked || form.get_tensor_cls.checked)) {
+    alert("Transfer functions require Scalar and/or Tensor Cl's!");
+    if (mod == "S") form.get_scalar_cls.checked = ! form.get_scalar_cls.checked;
+    if (mod == "T") form.get_tensor_cls.checked = ! form.get_tensor_cls.checked;
+    if (mod == "F") form.get_transfer.checked   = ! form.get_transfer.checked;
+  }
+}
+
+function MapShowHide(form) {
+  if (form.simul_type.value == '0') {
+    document.getElementById('mapresblk').style.display = 'none';
+  } else {
+    document.getElementById('mapresblk').style.display = 'block';
+  }
+}
+// -->
+</script>
+
+<h3>Supports the April 2014 Release</h3>
+
+<p class='warning'>This form uses JavaScript to enable certain layout
+features, and it uses Cascading Style Sheets to control the layout of all the
+form components.  If either of these features are not supported or enabled by
+your browser, this form will NOT display correctly.</p>
+
+<p>Descriptive information for the CAMB parameters can be found at:
+<a href='http://cosmologist.info/notes/CAMB.pdf' 
+target='_blank'>http://cosmologist.info/notes/CAMB.pdf</a></p>
+
+<form method='POST' action='/cgi-bin/camb_proc.pl'>
+<table class='cambform'>
+
+<tr><th colspan='4'>Actions to Perform</th></tr>
+<tr>
+  <td>
+    <input type='checkbox' value='T' name='get_scalar_cls' id='get_scalar_cls' onchange='validateActions(this.form, "S")' checked><label for='get_scalar_cls'>&nbsp;Scalar C<sub>l</sub>'s</label><br>
+    <input type='checkbox' value='T' name='get_vector_cls' id='get_vector_cls' onchange='validateActions(this.form, "V")'><label for='get_vector_cls'>&nbsp;Vector C<sub>l</sub>'s</label><br>
+    <input type='checkbox' value='T' name='get_tensor_cls' id='get_tensor_cls' onchange='validateActions(this.form, "T")'><label for='get_tensor_cls'>&nbsp;Tensor C<sub>l</sub>'s</label><br>
+  </td>
+  <td>
+    <input type='checkbox' value='T' name='do_lensing' id='do_lensing' checked><label for='do_lensing'> Do Lensing</label><br>
+    <input type='checkbox' value='T' name='get_transfer' id='get_transfer' onchange='validateActions(this.form, "F")'><label for='get_transfer'>&nbsp;Transfer Functions</label><br>
+  </td>
+  <td>
+    <input type='radio' value='0' name='do_nonlinear' id='do_nonlinear_lin' checked><label for='do_nonlinear_lin'>&nbsp;Linear</label><br>
+    <input type='radio' value='1' name='do_nonlinear' id='do_nonlinear_pwr'><label for='do_nonlinear_pwr'>&nbsp;Non-linear Matter Power (HALOFIT)</label><br>
+    <input type='radio' value='2' name='do_nonlinear' id='do_nonlinear_lns'><label for='do_nonlinear_lns'>&nbsp;Non-linear CMB Lensing (HALOFIT)</label><br>
+    <input type='radio' value='3' name='do_nonlinear' id='do_nonlinear_pln'><label for='do_nonlinear_pln'>&nbsp;Non-linear Matter Power and CMB Lensing (HALOFIT)</label><br>
+  </td>
+  <td>
+    <select name='simul_type' id='simul_type' onChange='MapShowHide(this.form)'>
+      <option value='0'>None</option>
+      <option value='1'>Temperature Only</option>
+      <option value='2'>Temp. and Polarization</option>
+    </select><label for='simul_type'>&nbsp;Sky&nbsp;Map&nbsp;Output</label><br>
+    <div id='mapresblk'>
+      <input type='text' name='nsmax' id='nsmax' size='10' value='512'><label for='nsmax'>&nbsp;Sky&nbsp;Map&nbsp;NSide</label><br>
+      <input type='text' name='fwhm_arcmin' id='fwhm_arcmin' size='10' value='420'><label for='fwhm_arcmin'>&nbsp;Beam&nbsp;Size&nbsp;(arcmin)</label><br>
+      <input type='text' name='iseed' id='iseed' size='10' value='0'><label for='iseed'>&nbsp;Synfast&nbsp;Random&nbsp;Number&nbsp;Seed</label><br>
+    </div>
+  </td>
+</tr>
+<tr><td colspan='4' class='cambinfo'><ul>
+  <li>Vector C<sub>l</sub>'s are incompatible with Scalar and Tensor C<sub>l</sub>'s.  The Transfer functions require Scalar and/or Tensor C<sub>l</sub>'s.</li>
+  <li>The HEALpix synfast program is used to generate maps from the resultant spectra.  The random number seed governs the phase of the
+  a<sub>lm</sub>'s generated by synfast.  The default of zero causes synfast to generate a new see from the system time with each run. 
+  Specifying a fixed nonzero value will return fixed phases with successive runs.</li>
+</ul></td></tr>
+
+<tr><th colspan='4'>Maximum Multipoles and k*eta</th></tr>
+<tr>
+  <td><strong>Scalar</strong><br>
+    <input type='text' name='l_max_scalar' id='l_max_scalar' size='8' value='2200'><label for='l_max_scalar'>&nbsp;l<sub>max</sub></label><br>
+    <input type='text' name='k_eta_max_scalar' id='k_eta_max_scalar' size='8' value='4000'><label for='k_eta_max_scalar'>&nbsp;k*eta<sub>max</sub></label><br>
+  </td>
+  <td><strong>Tensor</strong><br>
+    <input type='text' name='l_max_tensor' id='l_max_tensor' size='8' value='1500'><label for='l_max_tensor'>&nbsp;l<sub>max</sub></label><br>
+    <input type='text' name='k_eta_max_tensor' id='k_eta_max_tensor' size='8' value='3000'><label for='k_eta_max_tensor'>&nbsp;k*eta<sub>max</sub></label><br>
+  </td>
+  <td colspan='2'><br></td>
+</tr>
+<tr><td colspan='4' class='cambinfo'><ul>
+  <li>Tensor limits should be less than or equal to the scalar limits.</li>
+</ul></td></tr>
+
+<tr><th colspan='4'>Cosmological Parameters</th></tr>
+<tr>
+   <td>
+     <label for='use_physical'>Use Physical Parameters?</label>
+     <select id='use_physical' name='use_physical' size='1' onchange='PhysParamsShowHide(this.form)'>
+       <option value='T' selected>Yes</option>
+       <option value='F'>No</option>
+     </select><br>
+     <input type='text' name='hubble' id='hubble' size='8' value='70'><label for='hubble'>&nbsp;Hubble Constant</label><br>
+     <input type='text' name='temp_cmb' id='temp_cmb' size='8' value='2.7255'><label for='temp_cmb'>&nbsp;T<sub>cmb</sub></label><br>
+  </td>
+  <td><span id='mainparams2a'>
+     <input type='text' name='ombh2' id='ombh2' size='8' value='0.0226'><label for='ombh2'>&nbsp;&Omega;<sub>b</sub>h<sup>2</sup></label><br>
+     <input type='text' name='omch2' id='omch2' size='8' value='0.112'><label for='omch2'>&nbsp;&Omega;<sub>c</sub>h<sup>2</sup></label><br>
+     <input type='text' name='omnuh2' id='omnuh2' size='8' value='0.00064'><label for='omnuh2'>&nbsp;&Omega;<sub>&nu;</sub>h<sup>2</sup></label><br>
+     <input type='text' name='omk' id='omk' size='8' value='0'><label for='omk'>&nbsp;&Omega;<sub>k</sub></label><br>
+     <strong>Neutrino mass splittings</strong><br>
+     <input type='text' name='nu_mass_eigenstates' id='nu_mass_eigenstates' size='8' value='1'><label for='nu_mass_eigenstates'>&nbsp;#&nbsp;Eigenstates</label><br>
+     <input type='text' name='nu_mass_degeneracies' id='nu_mass_degeneracies' size='8' value='0'><label for='nu_mass_degeneracies'>&nbsp;Degeneracies</label><br>
+     <input type='text' name='nu_mass_fractions' id='nu_mass_fractions' size='8' value='1'><label for='nu_mass_fractions'>&nbsp;Mass&nbsp;Fractions</label><br>
+  </span></div>
+  <td><span id='mainparams2b'>
+     <input type='text' name='omega_baryon' id='omega_baryon' size='8' value='0.0462'><label for='omega_baryon'>&nbsp;&Omega;<sub>baryon</sub></label><br>
+     <input type='text' name='omega_cdm' id='omega_cdm' size='8' value='0.2538'><label for='omega_cdm'>&nbsp;&Omega;<sub>cdm</sub></label><br>
+     <input type='text' name='omega_lambda' id='omega_lambda' size='8' value='0.7'><label for='omega_lambda'>&nbsp;&Omega;<sub>lambda</sub></label><br>
+     <input type='text' name='omega_neutrino' id='omega_neutrino' size='8' value='0'><label for='omega_neutrino'>&nbsp;&Omega;<sub>neutrino</sub></label><br>
+  </span></td>
+  <td>
+     <input type='text' name='helium_fraction' id='helium_fraction' size='8' value='0.24'><label for='helium_fraction'>&nbsp;Helium Fraction</label><br>
+     <input type='text' name='massless_neutrinos' id='massless_neutrinos' size='8' value='2.046'><label for='massless_neutrinos'>&nbsp;Massless&nbsp;Neutrinos</label><br>
+     <input type='text' name='massive_neutrinos' id='massive_neutrinos' size='8' value='1'><label for='massive_neutrinos'>&nbsp;Massive&nbsp;Neutrinos</label><br>
+     <input type='text' name='w' id='w' size='8' value='-1'><label for='w'>&nbsp;Eqn.&nbsp;of&nbsp;State</label><br>
+     <input type='text' name='cs2_lam' id='cs2_lam' size='8' value='1'><label for='cs2_lam'>&nbsp;Comoving&nbsp;Sound&nbsp;Speed</label><br>
+     <select name='share_delta_neff' id='share_delta_neff' size='1'>
+       <option value='T' selected>Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+       <option value='F'>No</option>
+     </select><label for='share_delta_neff'>&nbsp;Share&nbsp;&Delta;N<sub>neff</sub></label></br>
+  </td>
+</tr>
+<tr><td colspan='4' class='cambinfo'><ul>
+ <li>The Equation of State entry is the effective equation of state parameter for dark energy and is assumed constant.</li>
+ <li>The Comoving Sound Speed parameter is the constant comoving sound speed of the dark energy; 1=quintessence.</li>
+ <li>Setting Degeneracies to zero sets the mass degeneracies parameter to massive neutrinos.  Otherwise this should be a space separated list
+ of values, one per eigenstate.</li>
+ <li>Fractions should be a space separated list indicating the fraction of &Omega;<sub>&nu;</sub>h<sup>2</sup> accounted for
+ by each eigenstate.</li>
+</td></tr>
+
+<tr>
+  <td><strong>Reionization</strong><br>
+    <label for='reionization'>Include Reionization?</label> <select id='reionization' name='reionization' size='1' onchange='ReionizationShowHide(this.form, "R")'>
+      <option value='T' selected>Yes</option>
+      <option value='F'>No</option>
+    </select><br>
+    <div id='reionizationcomp'>
+      <label for='re_use_optical_depth'>Use Optical Depth?</label> <select id='re_use_optical_depth' name='re_use_optical_depth' size='1' onchange='ReionizationShowHide(this.form, "O")'>
+        <option value='T'>Yes</option>
+        <option value='F' selected>No</option>
+      </select><br>
+      <div id='re_opt_depth_yes'>
+        <input type='text' name='re_optical_depth' id='re_optical_depth' size='8' value='0.09'><label for='re_optical_depth'>&nbsp;Optical&nbsp;Depth</label><br>
+      </div>
+      <div id='re_opt_depth_no'>
+        <input type='text' name='re_redshift' id='re_redshift' size='8' value='11'><label for='re_redshift'>&nbsp;Redshift</label><br>
+        <input type='text' name='re_delta_redshift' id='re_delta_redshift' size='8' value='0.5'><label for='re_delta_redshift'>&nbsp;Width&nbsp;of&nbsp;Transition</label><br>
+        <input type='text' name='re_ionization_frac' id='re_ionization_frac' size='8' value='1'><label for='re_ionization_frac'>&nbsp;Ionization&nbsp;Fraction</label><br>
+      </div>
+    </div>
+  </td>
+  <td><strong>Power Spectrum</strong><br>
+    <input type='text' name='initial_power_num' id='initial_power_num' size='16' value='1'><label for='initial_power_num'>&nbsp;Number</label><br>
+    <input type='text' name='scalar_amp' id='scalar_amp' size='16' value='2.46e-9'><label for='scalar_amp'>&nbsp;Scalar&nbsp;Amplitude</label><br>
+    <input type='text' name='scalar_spectral_index' id='scalar_spectral_index' size='16' value='0.96'><label for='scalar_spectral_index'>&nbsp;Scalar&nbsp;Spectral&nbsp;Index</label><br>
+    <input type='text' name='scalar_nrun' id='scalar_nrun' size='16' value='0'><label for='scalar_nrun'>&nbsp;Scalar&nbsp;Run&nbsp;Count</label><br>
+    <input type='text' name='scalar_nrunrun' id='scalar_nrunrun' size='16' value='0'><label for='scalar_nrun'>&nbsp;Scalar&nbsp;Run&nbsp;Run&nbsp;Count</label><br>
+    <input type='text' name='tensor_spectral_index' id='tensor_spectral_index' size='16' value='0'><label for='tensor_spectral_index'>&nbsp;Tensor&nbsp;Spectral&nbsp;Index</label><br>
+    <select name='tensor_parameterization' id='tensor_parameterization' size='1'>
+      <option value='1' selected>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+      <option value='2'>2</option>
+      <option value='3'>2</option>
+    </select><label for='tensor_parameterization'>Tensor Parameterization</label><br>
+    <input type='text' name='tensor_nrun' id='tensor_nrun' size='16' value='0'><label for='tensor_nrun'>&nbsp;Tensor&nbsp;Run&nbsp;Count</label><br>
+    <input type='text' name='tensor_amp'  id='tensor_amp'  size='16' value='0'><label for='tensor_nrun'>&nbsp;Tensor&nbsp;Amplitude</label><br>
+    <input type='text' name='initial_ratio' id='initial_ratio' size='16' value='1'><label for='initial_ratio'>&nbsp;Initial&nbsp;Ratio</label><br>
+  </td>
+  <td><strong>Normalization</strong><br>
+    <label for='COBE_normalize'>Use the COBE Normalization?</label> <select id='COBE_normalize' name='COBE_normalize' size='1'>
+      <option value='T'>Yes</option>
+      <option value='F' selected>No</option>
+    </select><br>
+    <label for='CMB_outputscale'>&nbsp;CMB&nbsp;Output&nbsp;Scale</label> <input type='text' name='CMB_outputscale' id='CMB_outputscale' size='12' value='7.43e12'><br>
+    <input type='text' value='0.005' name='pivot_scalar' id='pivot_scalar' size='12'>&nbsp;<label for='pivot_scalar'>Scalar&nbsp;Pivot</label><br>
+    <input type='text' value='0.005' name='pivot_tensor' id='pivot_tensor' size='12'>&nbsp;<label for='pivot_tensor'>Tensor&nbsp;Pivot</label><br>
+  </td>
+  <td><strong>Transfer Function Settings</strong><br>
+    <label for='transfer_high_precision'>High Precision?</label> <select id='transfer_high_precision' name='transfer_high_precision' size='1'>
+      <option value='T'>Yes</option>
+      <option value='F' selected>No</option>
+    </select><br>
+    <label for='transfer_interp_matterpower'>Matter/Power</label> <select id='transfer_interp_matterpower' name='transfer_interp_matterpower' size='1'>
+      <option value='T' selected>Interpolated Grid</option>
+      <option value='F'>Calculated Values</option>
+    </select><br>
+    <input type='text' name='transfer_kmax' id='transfer_kmax' size='16' value='2'><label for='transfer_kmax'>&nbsp;kmax</label><br>
+    <input type='text' name='transfer_k_per_logint' id='transfer_k_per_logint' size='16' value='5'><label for='transfer_k_per_logint'>&nbsp;k&nbsp;per&nbsp;logint</label><br>
+    <input type='text' name='transfer_num_redshifts' id='transfer_num_redshifts' size='16' value='1'><label for='transfer_num_redshifts'>&nbsp;Number&nbsp;of&nbsp;Redshifts</label><br>
+    <input type='text' name='transfer_redshift' id='transfer_redshift' size='16' value='0'><label for='transfer_redshift'>&nbsp;Redshifts</label><br>
+  </td>
+</tr>
+<tr><td colspan='4' class='cambinfo'><ul>
+  <li>The ratio is that of the initial tensor/scalar power spectrum amplitudes.  The vector modes use the scalar settings.</li>
+  <li>Supply 'Number' values in each after the first, separated by spaces.</li>
+  <li>To get &mu;K<sup>2</sup>, set a realistic initial scalar amplitude (e.g., 2.3e-9) and the output scale factor to ~7.43e12; for dimensionles transfer functions, set scalar amp to 1 and the output scale factor to 1.<.li>
+ <li> kmax=0.5 is enough for sigma_8. Each redshift must be supplied, separated by spaces. They will be sorted into descending order.</li>
+</ul></td></tr>
+ 
+<tr>
+  <td><strong>Initial Scalar Perturbation Mode</strong><br>
+    <select name='initial_condition' id='initial_condition' size='1' onchange='InitialConditionShowHide(this.form)'>
+      <option value='1' selected>Adiabatic</option>
+      <option value='2'>CDM Isocurvature</option>
+      <option value='3'>Baryon Isocurvature</option>
+      <option value='4'>Neutrino Density Isocurvature</option>
+      <option value='5'>Neutrino Velocity Isocurvature</option>
+      <option value='0'>Other</option>
+    </select><br>
+    <div id='otherperturb'>
+      <label for='initial_vector'>If 'Other', use modes in the<br>following (totally correlated)<br>proportions:</label><br>
+      <input type='text' name='initial_vector' id='initial_vector' size='20' value='-1 0 0 0 0'>
+    </div><br>
+    <div id='vector_mode_par'><strong><label for='vector_mode'>For Vector Modes:</label></strong><br>
+      <select name='vector_mode' id='vector_mode' size='1'>
+    	<option value='0'>Regular (Neutrino Vorticity Mode)</option>
+    	<option value='1'>Magnetic (Neutrino Vorticity Mode)</option>
+      </select><br>
+    </div>
+  </td>
+  <td><strong>Recombination</strong><br>
+    <input type='text' name='RECFAST_fudge' id='RECFAST_fudge' size='12' value='1.14'>&nbsp;<label for='RECFAST_fudge'>RECFAST</label><br>
+    <input type='text' name='RECFAST_fudge_He' id='RECFAST_fudge_He' size='12' value='0.86'>&nbsp;<label for='RECFAST_fudge_He'>RECFAST&nbsp;He</label><br>
+    <input type='text' name='RECFAST_Heswitch' id='RECFAST_Heswitch' size='12' value='6'>&nbsp;<label for='RECFAST_Heswitch'>RECFAST&nbsp;He&nbsp;Switch</label><br>
+    <select name='RECFAST_Hswitch' id='RECFAST_Hswitch' size='1'>
+      <option value='T' selected>Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+      <option value='F'>No</option>
+    </select><label for='RECFAST_Hswitch'>&nbsp;RECFAST&nbsp;H&nbsp;Switch</label><br>
+  </td>
+  <td><strong>Bispectrum Parameters</strong><br>
+    <select name='do_lensing_bispectrum' id='do_lensing_bispectrum' size='1' onchange='BispectrumShowHide(this.form)'>
+      <option value='T'>Yes</option>
+      <option value='F' selected>No</option>
+    </select><label for='do_lensing_bispectrum'>&nbsp;Do Lensing?</label><br>
+    <select name='do_primordial_bispectrum' id='do_primordial_bispectrum' size='1' onchange='BispectrumShowHide(this.form)'>
+      <option value='T'>Yes</option>
+      <option value='F' selected>No</option>
+    </select><label for='do_primordial_bispectrum'>&nbsp;Do Primordial?</label><br><div id='bispectruma'>
+    <input type='text' name='bispectrum_nfields' id='bispectrum_nfields' size='15' value='1'><label for='bispectrum_nfields'>&nbsp;Number of fields</label><br>
+    <input type='text' name='bispectrum_slice_base_L' id='bispectrum_slice_base_L' size='15' value='1'><label for='bispectrum_slice_base_L'>&nbsp;Slice Base L</label><br>
+  </div></td>
+  <td><br><div id='bispectrumb'>
+    <input type='text' name='bispectrum_ndelta' id='bispectrum_ndelta' size='15' value='1'><label for='bispectrum_ndelta'>&nbsp;Number of Deltas</label><br>
+    <input type='text' name='bispectrum_delta' id='bispectrum_delta' size='15' value='1'><label for='bispectrum_delta'>&nbsp;Deltas</label><br>
+    <select name='bispectrum_export_alpha_beta' id='bispectrum_export_alpha_beta' size='1'>
+      <option value='T'>Yes</option>
+      <option value='F' selected>No</option>
+    </select><label for='bispectrum_export_alpha_beta'>&nbsp;Export &alpha; and &beta;</label><br>
+    <select name='bispectrum_full_output_sparse' id='bispectrum_full_output_sparse' size='1'>
+      <option value='T'>Yes</option>
+      <option value='F' selected>No</option>
+    </select><label for='bispectrum_full_output_sparse'>&nbsp;Sparse Output</label><br>
+    <input type='hidden' name='bispectrum_do_fisher' id='bispectrum_do_fisher' value='F'>
+  </div></td>
+  <td>
+    <br>
+  </td>
+</tr>
+<tr><td colspan='4' class='cambinfo'><ul>
+<li>Bispectrum: Primordial is currently only a local model (fnl=1) and can take several minutes to run. Lensing is fairly quick.</li>
+<li>Separate the Bispectrum delta values with spaces.</li>
+</ul></td></tr>
+
+<tr><th colspan='4'>Performance and Reporting Parameters</th></tr>
+<tr>
+  <td>
+    <label for='feedback_level'>Feedback Level</label> <select id='feedback_level' name='feedback_level' size='1'>
+      <option value='1'>Print</option>
+      <option value='0'>None</option>
+    </select><br>
+    <label for='lensing_method'>Lensing Method</label> <select id='lensing_method' name='lensing_method' size='1'>
+      <option value='1'>Curved Correlation Function</option>
+      <option value='2'>Flat Correlation Function</option>
+      <option value='3'>Inaccurate Harmonic Method</option>
+    </select><br>
+    <label for='accurate_BB'>Accurate BB</label> <select id='accurate_BB' name='accurate_BB' size='1'>
+      <option value='T'>Yes</option>
+      <option value='F' selected>No</option>
+    </select><br>
+    <label for='accurate_reionization'>Accurate EE</label> <select id='accurate_reionization' name='accurate_reionization' size='1'>
+      <option value='T'>Yes</option>
+      <option value='F' selected>No</option>
+    </select><br>
+  </td>
+  <td colspan='2'>
+    <label for='do_tensor_neutrinos'>Tensor Neutrinos</label> <select id='do_tensor_neutrinos' name='do_tensor_neutrinos' size='1'>
+      <option value='T'>Yes</option>
+      <option value='F' selected>No</option>
+    </select><br>
+    <label for='massive_nu_approx'>Massive Neutrino Approx</label> <select id='massive_nu_approx' name='massive_nu_approx' size='1'>
+      <option value='0'>Integrate Distribution Function</option>
+      <option value='1'>Series velocity weight</option>
+      <option value='2'>Fast appromation scheme</option>
+    </select><br>
+    <label for='accurate_polarization'>Accurate Polarization</label> <select id='accurate_polarization' name='accurate_polarization' size='1'>
+      <option value='T' selected>Yes</option>
+      <option value='F'>No</option>
+    </select><br>
+    <label for='do_late_rad_truncation'>Truncate late radiation heirarchies</label> <select id='do_late_rad_truncation' name='do_late_rad_truncation' size='1'>
+      <option value='T' selected>Yes</option>
+      <option value='F'>No</option>
+    </select><br>
+  </td>
+  <td>
+    <input type='text' id='accuracy_boost' name='accuracy_boost' size='6' value='1'><label for='accuracy_boost'>&nbsp;Accuracy Boost</label><br>
+    <input type='text' id='l_accuracy_boost' name='l_accuracy_boost' size='6' value='1'><label for='l_accuracy_boost'>&nbsp;'l' Accuracy Boost</label><br>
+    <input type='text' id='l_sample_boost' name='l_sample_boost' size='6' value='1'><label for='l_sample_boost'>&nbsp;'l' Sample Boost</label><br>
+  </td>
+</tr>
+<tr><td colspan='4' class='cambinfo'><ul>
+  <li>Massive Neutrino Approximation:  The series velocity weight option:  switch to this approximation once non-relativistic.  The fast
+     approximation scheme is a CMB-only option, accurate for light neutrinos.</li>
+  <li>Accurate EE:  Set to yes if you are bothered about percent accuracy on EE from reionization.</li>
+  <li>Tensor Neutrinos:  Indicates whether or not to include neutrinos in the tensor evolution equations.</li>
+  <li>Truncate late radiation heirarchies:  Indicates whether or not to turn off small-scale late tume radiation heirarchies.  This is a time versus accuracy tradeoff.</li>
+  <li>Accuracy Boosts:  Higher numbers improve accuracy by reducing time steps.</li>
+</ul></td></tr>
+
+<tr>
+  <td class='cambgo'><input type='Submit' name='go' value='Go!'></td>
+  <td colspan='2'><br></td>
+  <td class='cambreset'><input type='Reset'></td>
+</tr>
+
+</table></form>
+<script language='JavaScript'><!--
+document.getElementById('mapresblk').style.display     = 'none';
+//-->
+</script>

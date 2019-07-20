@@ -1,0 +1,69 @@
+/*
+This is the CSS file used exclusively by the CAMB web interface.  It adds to the general site stylesheet.
+
+Written by Michael R. Greason, SSAI, 25 October 2005.
+*/
+/*
+
+		General parameters.
+*/
+.cambform {
+}
+
+.cambform td {
+	padding:          0.5em 1em 0.5em 0em;
+	vertical-align:   top;
+	text-align:       left;
+	line-height:      130%;
+}
+
+.cambform th {
+	padding:          0.5em 1em 0.5em 0em;
+	color:            #069;
+	font-size:        16px;
+	font-weight:      normal;
+	font-style:       italic;
+	vertical-align:   top;
+	text-align:       left;
+}
+
+.cambform td.reset {
+	text-align:      right;
+}
+
+.cambinfo {
+	font-size:       0.9em;
+	color:           red;
+	text-decoration: italic;
+}
+/*
+		Explicit layout.
+*/
+#mapresblk {
+	display: none;
+}
+#mainparams2a {
+	display: block;
+}
+#mainparams2b {
+	display: none;
+}
+#reionizationcomp {
+	display: block;
+}
+#re_opt_depth_yes {
+	display: none;
+}
+#re_opt_depth_no {
+	display: block;
+}
+#bispectruma {
+	display: none;
+}
+#bispectrumb {
+	display: none;
+}
+#otherperturb {
+	display: none;
+}
+
