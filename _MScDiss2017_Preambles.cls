@@ -28,8 +28,8 @@
  \end{center}\par
  \noindent\begin{minipage}[b]{\textwidth}
   \centering
- Submitted August 2017 in part fulfilment of the requirements for the degree of\\
- Master in Physics at Queen Mary University of London  
+ Submitted August 2019 in part fulfilment of the requirements for the degree of\\
+ Bachelor in Physics and Particle Physics at Queen Mary University of London  
 \end{minipage}
 
  \ifx\@declaration\@empty\else{
