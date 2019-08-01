@@ -96,7 +96,7 @@ We saw that having a higher ratio of baryonic matter would result in a huge incr
 
 %Chapter
 \chapter{Introduction}
-The Cosmic Microwave Background radiation (CMB) is electromagnetic radiation (EM) from the time of the Big Bang. Over the course of around 13 billion years, the CMB has been red-shifted to longer wavelengths due to the persisting expansion of the universe. As such, it has cooled dramatically from its initial state about 300,000 years after the Big Bang. The exact nature of the origins of the CMB and the Big Bang theory are beyond the scope of this project; however, the important part of this is that the CMB is about 2.7 Kelvin above absolute zero. \cite{UCLA}
+The Cosmic Microwave Background radiation (CMB) is electromagnetic radiation (EM) from the time of the Big Bang. Over the course of around 13 billion years, the CMB has been red-shifted to longer wavelengths due to the persisting expansion of the universe. As such, it has cooled dramatically from its initial state about 300,000 years after the Big Bang. The exact nature of the origins of the CMB and the Big Bang theory are beyond the scope of this project; however, the important part of this is that the CMB is about 2.7 Kelvin above absolute zero. \cite{PostgradCMB}
 
 \paragraph{}
 
@@ -104,19 +104,35 @@ At cosmological scales, about 100 giga parsecs (Gpc), the universe may be taken 
 
 \paragraph{}
 
-One can see in the image of the CMB taken by the Planck satellite that it's quite the opposite in fact. There are many zones of differing temperatures. The CMB is not wholly isotropic and this image shows that very clearly. These fluctuations are incredibly small, within the order of micro-Kelvin, and are collectively known as anisotropy.
+\begin{figure}
+	\begin{center}
+	\includegraphics[width=\textwidth]{WMAP-map}
+	\caption{WMAP CMB Anisotropy Photo. Note the speckled appearance as a result of many hot and cold zones. \cite{UCLA}}
+	\label{wmapcmb}
+	\end{center}
+\end{figure}
+
+One can see in the image of the CMB taken by the Planck satellite (figure \ref{wmapcmb} that it's quite the opposite in fact. There are many zones of differing temperatures. The CMB is not wholly isotropic and this image shows that very clearly. These fluctuations are incredibly small, within the order of micro-Kelvin, and are collectively known as anisotropy. \cite{UCLA}
 
 \paragraph{}
 
-The way to describe the CMB anisotropy is with spherical harmonics. As such, the CMB power spectrum is actually an angular power spectrum. Under the model of Inflation, these temperature fluctuations are Gaussian, and the variance is given by C\textsubscript{l}. l in this instance is the multipole moment. Different values of l represent a given angle in the sky, and can be thought of as angular frequency for the temperature fluctuations, with higher values of l corresponding to smaller angles.
+The way to describe the CMB anisotropy is with spherical harmonics. \cite{Berkeley} As such, the CMB power spectrum is actually an angular power spectrum. Under the model of Inflation, these temperature fluctuations are Gaussian, and the variance is given by $C$\textsubscript{$\ell$}. $\ell$ in this instance is the multipole moment. Different values of $\ell$ represent a given angle in the sky, and can be thought of as angular frequency for the temperature fluctuations, with higher values of $\ell$ corresponding to smaller angles. Essentially, the value of $\ell$ can be thought of as "how many opposite zones are there", the simplest of which is a dipole, in which there are two zones, opposites of each other, just like a bar magnet. As you increase the number of zones, the number of poles will also increase. This is essentially what the CMB power spectrum represents; at higher values of $\ell$, there are many many more zones being observed simultaneously. This can be seen in figure \ref{cmball}.
+
+\begin{figure}
+	\begin{center}
+	\includegraphics[width=\textwidth]{cu-1000-031.pdf}
+	\caption{Cumulative image of the sky, featuring a multipole $\ell$ value of 260. This closely resembles the pattern in figure \ref{wmapcmb}, and the fluctuations are also not equally distributed. You can also see the corresponding relative position on the CMB power spectrum plot in the top left corner. \cite{Pryke}}
+	\label{cmball}
+	\end{center}
+\end{figure}
 
 \paragraph{}
 
-We can see how the plots of the multipole moment against the temperature fluctuations in micro-Kelvin\textsuperscript{2} results in the CMB power spectrum. The three characteristic peaks correspond to the curvature of the universe, the baryon density, and the cold dark matter density, though the exact reasons why are beyond the scope of this research.
+We can see how the plots of the multipole moment against the temperature fluctuations in $\mu$$K$$^2$ results in the CMB power spectrum. The three characteristic peaks correspond to the curvature of the universe, the baryon density, and the cold dark matter density, though the exact reasons why are beyond the scope of this research.
 
 \paragraph{}
 
-There are three commonly considered energy densities used to construct the CMB power spectrum: Omega(b)which denotes normal baryonic matter, Omega(c) denotes cold dark matter, and Omega(lambda) denotes dark energy. This however neglects another energy density value, specifically, Omega(nu), the energy density of neutrinos. 
+There are three commonly considered energy densities used to construct the CMB power spectrum: $\Omega$\textsubscript{b} which denotes normal baryonic matter, $\Omega$\textsubscript{c} denotes cold dark matter, and $\Omega$\textsubscript{$\Lambda$} denotes dark energy. This however neglects another energy density value, specifically, $\Omega$\textsubscript{$\nu$}, the energy density of neutrinos. 
 
 \paragraph{}
 
@@ -129,11 +145,11 @@ Before I could begin, I had to first familiarise myself with the precise meaning
 
 \paragraph{}
 
-I found online, two simulators of the CMB, one simplistic and the other incredibly in-depth. The simplistic one was similar to what I had planned to make myself: a simulator that allows changing of variables and instantly outputs the new graph. The second simulator did not have this feature but had a large selection of variables to tweak.
+I found online, two simulators of the CMB, one simplistic and the other incredibly in-depth. \cite{SimpleCMB} The simplistic one was similar to what I had planned to make myself: a simulator that allows changing of variables and instantly outputs the new graph. The second simulator did not have this feature but had a large selection of variables to tweak. \cite{LambdaToolsCMBSimulator}
 
 \paragraph{}
 
-The second simulator, upon completion of the simulation, would also provide a data file in which were contained the multipole moment values ranging from 2 to 2200, as well as the temperature fluctuations for the different versions of the CMB spectrums. The one I was concerned with was the temperature angular power spectrum (TT). I used this file as the input for all the base variables in my simulator. I also looked at the values presented  for the temperature-polarisation cross-power spectrum (TE) and the polarised spectrum (EE), and decided to also simulate these graphs for the purposes of comparison; to see whether they get affected the same way as my baseline TT graph. There was no intent to delve deeper into the effects of the polarisation.
+The second simulator, upon completion of the simulation, would also provide a data file in which were contained the multipole moment values ranging from 2 to 2200, as well as the temperature fluctuations for the different versions of the CMB spectrums. The one I was concerned with was the temperature angular power spectrum (TT). I used this file as the input for all the base variables in my simulator. I also looked at the values presented  for the temperature-polarisation cross-power spectrum (TE) and the polarised spectrum (EE), and decided to also simulate these graphs for the purposes of comparison; to see whether they get affected the same way as my baseline TT graph. There was no intent to delve deeper into the effects of the polarisation at this time.
 
 \section{Making the simulator}
 
@@ -141,7 +157,7 @@ The language of choice was Python 2.7. Using this I was able to start work on co
 
 \paragraph{}
 
-I chose to use Jupyter Notebook as my platform to code on. The first step was to gather all the necessary data, as well as import all the necessary packages. 
+I chose to use Jupyter Notebook \cite{JupyterNotebook} as my platform to code on, and a Github repository \cite{Github} to commit and push my work to. The first step was to gather all the necessary data, as well as import all the necessary packages. 
 
 \lstset{
 	language=Python,
@@ -172,11 +188,11 @@ params = camb.read_ini('camb_interface/camb_params.ini')
 \end{lstfloat}
 
 \paragraph{}
-This imported the primary packages that I needed in order to make the graph and have it actually function. CAMB is Code for Anisotropies in the Microwave Background and is used for calculating many things within cosmology. It just so happens to also use Python as the main code. Matplot was necessary to have a way to draw the graph. NumPy was used to manipulate the data from CAMB and pass it on to Matplot to use in the formation of the graph. IPyWidgets was to create the interactive controls to vary the values of the graph and output the changes in real time.
+This imported the primary packages that I needed in order to make the graph and have it actually function. CAMB is Code for Anisotropies in the Microwave Background and is used for calculating many things within cosmology \cite{PythonCAMB}. It just so happens to also use Python as the main code. Matplot was necessary to have a way to draw the graph. NumPy was used to manipulate the data from CAMB and pass it on to Matplot to use in the formation of the graph \cite{numpy}. IPyWidgets was to create the interactive controls to vary the values of the graph and output the changes in real time \cite{widgets}.
 
 \paragraph{}
 
-The next step was to create a function that would be called and "interacted" with. I defined this first run as "camb\_plot\_tt", and also defined the values that I would have available to change; each of the "om\_h2" represent their respective energy densities, with om standing for Omega, h2 being Planck's constant squared, and with the letter corresponding to its respective object: b for baryons, c for dark matter, nu for neutrinos.
+The next step was to create a function that would be called and "interacted" with. I defined this first run as "camb\_plot\_tt", and also defined the values that I would have available to change; each of the "om\_h2" represent their respective energy densities, with om standing for $\Omega$, h2 being Planck's constant squared ($h$$^2$), and with the letter corresponding to its respective object: b for baryons, c for dark matter, nu for neutrinos.
 
 \paragraph{}
 
@@ -207,7 +223,7 @@ def camb_plot_tt(ombh2, omch2, omnuh2):
 
 %\paragraph{}
 
-Here I set the initial values for each of the three variables as the defaults present within the CAMB data. By assigning variables in Python, I was able to save some time and avoid having to rewrite too much. 'TxT' was taken from the array and contained all the data points for plotting the TT CAMB graph. Once I assigned reasonable limits for the axes and added a handy feature to save the future plot as a pdf file, I moved on to figuring out how to create the interactive sliders for the three variables.
+Here I set the initial values for each of the three variables as the defaults present within the CAMB data. By assigning variables in Python, I was able to save some time and avoid having to rewrite too much. 'TxT' was taken from the array and contained all the data points for plotting the TT CAMB graph. Once I assigned reasonable limits for the axes and added a handy feature to save the future plot as a .pdf file, I moved on to figuring out how to create the interactive sliders for the three variables.
 
 %\paragraph{}
 
@@ -224,7 +240,7 @@ interact(camb_plot_tt,
 
 \paragraph{}
 
-By using the floatsliders present in iPywidgets, I was able to assign the minimum and maximum values for the variables and also assign an appropriate step value of 0.001. The readout format was chosen specifically to avoid visually truncating the value of the Omeganu value, as it's very small at default.
+By using the floatsliders present in iPywidgets, I was able to assign the minimum and maximum values for the variables and also assign an appropriate step value of 0.001. The readout format was chosen specifically to avoid visually truncating the value of the $\Omega$\textsubscript{$\nu$} value, as it's very small at default (0.00064).
 
 \paragraph{}
 
@@ -236,14 +252,22 @@ Initially however, I discovered a flaw in my programming. Because I had constrai
 
 \paragraph{}
 
-Regardless, I was able to get a working version of the simulator, and decided to plot the EE and TE values to see that they also matched the ones seen on the Lambda website.
+Regardless, I was able to get a working version of the simulator, and decided to plot the EE and TE values to see that they also matched the ones seen on the Lambda website (see figure \ref{ogcmb}).
 
 \label{sec:template}
+
+\begin{figure}
+	\begin{center}
+	\includegraphics[width=\textwidth]{gh9-f02.eps}
+	\caption{The WMAP nine-year power spectrum to which I was comparing my plot. Notice how the maximum peak at around $\ell$$\approx$200 is also around 1$^\circ$ on the angular scale. \cite{LambdaTools}}
+	\label{ogcmb}
+	\end{center}
+\end{figure}
 
 \begin{figure}[t]
   \begin{center}
   \includegraphics{2Cl-TT-vs-l.pdf}
-  \caption{Scalar Non-lensed CMB Power Spectrum TT} 
+  \caption{My plot of the Scalar Non-lensed CMB Power Spectrum TT} 
   \label{fig:TT}
   \end{center}
 \end{figure}
@@ -269,7 +293,7 @@ The most notable thing is that past a certain point, increases in value for each
 \begin{figure}[t]
 	\begin{center}
 	\includegraphics{3Cl-TT-vs-l}
-	\caption{TT Spectrum with biased $\Omega$\textsubscript{b}}
+	\caption{TT Spectrum with biased $\Omega$\textsubscript{b}. The first peak maximum skyrockets beyond the y-axis limit while the other peaks become smeared and start to homogenise.}
 	\label{fig:bbias}
 	\end{center}
 \end{figure}
@@ -283,7 +307,7 @@ Strangely, for baryonic matter, my prediction was only half wrong. In figure \re
 \begin{figure}
 	\begin{center}
 	\includegraphics{4Cl-TT-vs-l}
-	\caption{TT Spectrum with biased $\Omega$\textsubscript{c}}
+	\caption{TT Spectrum with biased $\Omega$\textsubscript{c}. Lowered total amplitude but peaks are still well defined and the position of the peak maximum has remained the same.}
 	\label{fig:cbias}
 	\end{center}
 \end{figure}
@@ -293,7 +317,7 @@ For dark matter, this test also went against my prediction entirely. Figure \ref
 \begin{figure}
 	\begin{center}
 	\includegraphics{5Cl-TT-vs-l}
-	\caption{TT Spectrum with biased $\Omega$\textsubscript{$\nu$}}
+	\caption{TT Spectrum with biased $\Omega$\textsubscript{$\nu$}. Huge decrease in overall amplitude, in addition to lots of smoothing of the line, suggesting increased homogeneity due to the increased amount of neutrinos in this particular simulation.}
 	\label{fig:vbias}
 	\end{center}
 \end{figure}
@@ -304,7 +328,7 @@ Figure \ref{fig:vbias} shows the neutrino biased simulation to be quite similar 
 
 \paragraph{}
 
-Comparing the three graphs shows that biasing $\Omega$\textsubscript{b} creates the most noticeable change, and more specifically, that it hugely increases the temperature fluctuations at the lower values of $\ell$, as well as moving the maximum of the largest first peak to be at a slightly higher value of $\ell$ compared to the other two graphs. In figure \ref{fig:bbias}, the first peak exceeds the maximum limit on the graph; I predict it reaches at least 10000$\mu$K$^2$, meaning that the real temperature fluctuation is $\sim$0.1$\mu$K, which is a very significant anistropy. 
+Comparing the three graphs shows that biasing $\Omega$\textsubscript{b} creates the most noticeable change, and more specifically, that it hugely increases the temperature fluctuations at the lower values of $\ell$, as well as moving the maximum of the largest first peak to be at a slightly higher value of $\ell$ compared to the other two graphs. In figure \ref{fig:bbias}, the first peak exceeds the maximum limit on the graph; I predict it reaches at least 10000$\mu$$K$$^2$, meaning that the real temperature fluctuation is $\sim$0.1$\mu$$K$, which is a very significant anisotropy. 
 \paragraph{}
 One could infer what sort of consequences may arise on a universal scale as a result of this, such as how it would affect the rate of expansion, as well as the percentage of accompanying dark matter, dark energy, and neutrinos. Certain other phenomenon such as galaxy cluster lensing would also get affected by fluctuating rates of dark matter, and the size of the galaxy clusters would also change in accordance with the amount of dark matter present in the universe.
 
@@ -326,7 +350,7 @@ Additionally, the dark matter result was not expected and shows that an increase
 
 \paragraph{}
 
-These rudimentary simulations have shown the possible effects on CMB anisotropy, and subsequently on the distribution of different types of matter within the universe. Though these are mostly hypothetical scenarios, they can be useful to help us to predict the behaviour of certain particles.
+These rudimentary simulations have shown the possible effects on CMB anisotropy, and subsequently on the distribution of different types of matter within the universe. Though these are mostly hypothetical scenarios, they can be useful to help us to predict the behaviour of certain particles, or indeed on larger scales such as galaxy clusters and possibly even black holes, though more research would need to be done on that particular case.
 
 \paragraph{}
 
