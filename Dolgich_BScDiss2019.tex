@@ -188,7 +188,7 @@ params = camb.read_ini('camb_interface/camb_params.ini')
 \end{lstfloat}
 
 \paragraph{}
-This imported the primary packages that I needed in order to make the graph and have it actually function. CAMB is Code for Anisotropies in the Microwave Background and is used for calculating many things within cosmology \cite{PythonCAMB}. It just so happens to also use Python as the main code. Matplot was necessary to have a way to draw the graph. NumPy was used to manipulate the data from CAMB and pass it on to Matplot to use in the formation of the graph \cite{numpy}. IPyWidgets was to create the interactive controls to vary the values of the graph and output the changes in real time \cite{widgets}.
+This imported the primary packages that I needed in order to make the graph and have it actually function. CAMB is Code for Anisotropies in the Microwave Background and is used for calculating many things within cosmology \cite{PythonCAMB}. It uses Python as the main code, but FORTRAN to run the simulation. Matplotlib was necessary to have a way to draw the graph. NumPy was used to manipulate the data from CAMB and pass it on to Matplotlib to use in the formation of the graph \cite{numpy}. IPyWidgets was to create the interactive controls to vary the values of the graph and output the changes in real time \cite{widgets}.
 
 \paragraph{}
 
