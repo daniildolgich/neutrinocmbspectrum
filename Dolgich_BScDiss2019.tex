@@ -18,7 +18,10 @@
 \usepackage[]{_MScDiss_sty}
 %\usepackage{chngcntr}
 %\counterwithout{footnote}{chapter}
-
+\usepackage{listings}
+\usepackage{fontspec-xetex}
+\usepackage{xcolor}
+\setmonofont{Courier}
 %% these macros turn citations into ADS clickers in dvi, pdf, html output
 %% (EDP Sciences improved them in December 2012 to work also with pdflatex)
 \bibpunct{(}{)}{;}{a}{}{,}    %% natbib cite format used by A&A and ApJ
@@ -58,7 +61,7 @@
 \abstract{We studied the Cosmic Microwave Background radiation (CMB) in order to better understand the lesser studied portions of the CMB Power Spectrum. To facilitate this, I created my own CMB simulator using Python, and used it to demonstrate the effects that different values for Baryonic matter, Dark Matter, and Neutrino energy densities have on the CMB power spectrum.}
 \tableofcontents % generates Table of Contents
 \listoffigures % generates List of figures
-\listoftables % generates List of Tables
+\lstlistoflistings % generates List of listings
 Introduction: general overview of what CMB is; what I mean by energy densities; current understanding of CMB (composition etc, observed values); the simulation was created as a way to fit the data, and to find the composition.
 
 
@@ -120,15 +123,75 @@ The second simulator, upon completion of the simulation, would also provide a da
 
 \section{Making the simulator}
 
+The language of choice was Python 2.7. Using this I was able to start work on constructing the simulator.
 
+\paragraph{}
 
+The first step was to gather all the necessary data, as well as import all the necessary packages. 
+
+\lstset{
+	language=Python,
+	frame=lines,
+	rulecolor=\color{magenta},
+	numbers=left,
+	numbersep=10pt,
+	basicstyle=\ttfamily\small,
+	numberstyle=\ttfamily\small,
+	breaklines=true,
+	keywordstyle=\bfseries\color{teal},
+	identifierstyle=\color{blue},
+	stringstyle=\color{red},
+	commentstyle=\itshape\color{lime},
+}
+\begin{lstlisting}[caption={Setting up}, captionpos=b]
+import camb
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+from ipywidgets import interact
+import ipywidgets as widgets
+
+params = camb.read_ini('camb_interface/camb_params.ini')
+\end{lstlisting}
+
+This imported the primary packages that I needed in order to make the graph and have it actually function. CAMB is Code for Anisotropies in the Microwave Background
+
+\begin{lstlisting}[caption={Initialising the first plot}, captionpos=b]
+%matplotlib inline
+def camb_plot_tt(ombh2, omch2, omnuh2):
+    params.ombh2 = ombh2
+    params.omch2 = omch2
+    params.omnuh2 = omnuh2
+    results = camb.get_results(params)
+
+    unlensed = results.get_cmb_unlensed_scalar_array_dict(lmax=2200, CMB_unit='muK')
+
+    tt = unlensed['TxT']
+
+    fig, ax = plt.subplots()
+    tt = np.delete(tt, [0, 1])
+    ax.plot(tt, linewidth=1)
+    ax.set_xlim([None, 2500])
+    ax.set_ylim([None, 7000])
+    ax.set(xlabel='Multipole Moment (l)', ylabel='CMB_Unit (uK^2)', title='Cl TT CMB Power Spectrum')
+    fig.savefig("Cl-TT-vs-l.pdf")
+    plt.show()
+
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Creating the first plot}, captionpos=b]
+params = camb.read_ini('camb_interface/camb_params.ini')
+interact(camb_plot_tt,
+         ombh2=widgets.FloatSlider(value=params.ombh2, min=0, max=1, step=0.001, readout_format='.5f'),
+         omch2=widgets.FloatSlider(value=params.omch2, min=0, max=1, step=0.001, readout_format='.5f'),
+         omnuh2=widgets.FloatSlider(value=params.omnuh2, min=0, max=1, step=0.001, readout_format='.5f'));
+\end{lstlisting}
 
 \label{sec:template}
 
-
-\begin{figure}[hbtp]
+\begin{figure}[t]
   \begin{center}
-  \includegraphics[width=80mm]{Cl-TT-vs-l.pdf}
+  \includegraphics{Cl-TT-vs-l.pdf}
   \caption{Scalar Non-lensed CMB Power Spectrum TT} 
   \label{fig:test}
   \end{center}
