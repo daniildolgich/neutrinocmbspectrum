@@ -21,7 +21,12 @@
 \usepackage{listings}
 \usepackage{fontspec-xetex}
 \usepackage{xcolor}
-\setmonofont{Courier}
+\usepackage{float}
+
+\newfloat{lstfloat}{htbp}{lop}
+\floatname{lstfloat}{Listing}
+%\def\lstfloatautorefname{Listing}
+%\setmonofont{Courier}
 %% these macros turn citations into ADS clickers in dvi, pdf, html output
 %% (EDP Sciences improved them in December 2012 to work also with pdflatex)
 \bibpunct{(}{)}{;}{a}{}{,}    %% natbib cite format used by A&A and ApJ
@@ -49,7 +54,14 @@
 \supervisor{Prof. Teppei Katori}
 \date{\today}
 %\date{July 2019} 
-\acknowledgements{I  thank whoever I want here - or I can instead comment it out.}
+\acknowledgements{I'd like to give my appreciation to Prof. Teppei Katori for supervising my project even though it was outside of his comfort zone. There was a lot of mutual learning that made this all the more valuable. I would also like to thank him for his patience and support in regards to my health and well-being.
+\paragraph{}
+Consultation by Dr. Alkistis Pourtsidou was very helpful in kick-starting my understanding regarding the topics in this project. Her passion for her field inspired me to pursue this topic.
+\paragraph{}
+Many thanks as well to Harvey Abraham-Green and Leonie Dos Santos for offering their time and support when it was needed most.
+\paragraph{}
+Finally, a big thank you to my parents.
+}
 \newpage % to ensure page 1 starts on front of a page rather than back
 %%---and here------%
 
@@ -58,20 +70,22 @@
 \setcounter{tocdepth}{5}
 
 \maketitle
-\abstract{We studied the Cosmic Microwave Background radiation (CMB) in order to better understand the lesser studied portions of the CMB Power Spectrum. To facilitate this, I created my own CMB simulator using Python, and used it to demonstrate the effects that different values for Baryonic matter, Dark Matter, and Neutrino energy densities have on the CMB power spectrum.}
+\abstract{We studied the Cosmic Microwave Background radiation (CMB) in order to better understand the lesser studied portions of the CMB Power Spectrum. To facilitate this, I created my own CMB simulator with Python 2.7, using Jupyter Notebook as the compiler and Github to commit and push my work.
+\paragraph{}
+I used this simulator to demonstrate the effects that different values of the energy density for Baryonic matter ($\Omega$\textsubscript{b}), Dark Matter ($\Omega$\textsubscript{c}), and Neutrinos ($\Omega$\textsubscript{$\nu$}) have on the CMB power spectrum, and what observations could be made regarding the outcomes.
+\paragraph{}
+I found that altering the values of $\Omega$\textsubscript{c} caused the first peak of the CMB spectrum to greatly increase in amplitude and width, whilst smoothing out the rest of the power spectrum past that point. It also moved the maximum of the peak from $\ell$$\approx$200 to $\ell$$\approx$300, resulting in a huge and significant temperature fluctuation of $\sim$0.1$\mu$K.
+\paragraph{}
+Altering the values of $\Omega$\textsubscript{c} caused the overall amplitude of the spectrum to go down, but maintained well defined peaks and did not shift the relative x-axis position of the peaks in any direction.
+\paragraph{}
+Increasing the value of $\Omega$\textsubscript{$\nu$} caused an overall smoothing of the power spectrum, as well as a large reduction in the amplitudes of the peaks, and a slight shift of the first peak maximum to the left.
+\paragraph{}
+We saw that having a higher ratio of baryonic matter would result in a huge increase to the CMB anisotropy, and that a high neutrino energy density creates more "empty space" (space that is occupied by extremely unreactive neutrinos instead of any other particle). These would change our perception of when important cosmological events occurred, and would also affect large cosmological bodies such as galaxy clusters.
+
+}
 \tableofcontents % generates Table of Contents
 \listoffigures % generates List of figures
 \lstlistoflistings % generates List of listings
-Introduction: general overview of what CMB is; what I mean by energy densities; current understanding of CMB (composition etc, observed values); the simulation was created as a way to fit the data, and to find the composition.
-
-
-Methodology: literally everythind I did to get my simulation running
-
-
-Results: remarks about the simulations and how the graph changes with varying values of each energy density.
-
-
-Conclusion: expansion of abstract plus summary of results
 
 \newpage% to flush out last roman numeral
 \cleardoublepage
@@ -82,7 +96,7 @@ Conclusion: expansion of abstract plus summary of results
 
 %Chapter
 \chapter{Introduction}
-The Cosmic Microwave Background radiation (CMB) is electromagnetic radiation (EM) from the time of the Big Bang. Over the course of around 13 billion years, the CMB has been red-shifted to longer wavelengths due to the persisting expansion of the universe. As such, it has cooled dramatically from its initial state about 300,000 years after the Big Bang. The exact nature of the origins of the CMB and the Big Bang theory are beyond the scope of this project; however, the important part of this is that the CMB is about 2.7 Kelvin above absolute zero.
+The Cosmic Microwave Background radiation (CMB) is electromagnetic radiation (EM) from the time of the Big Bang. Over the course of around 13 billion years, the CMB has been red-shifted to longer wavelengths due to the persisting expansion of the universe. As such, it has cooled dramatically from its initial state about 300,000 years after the Big Bang. The exact nature of the origins of the CMB and the Big Bang theory are beyond the scope of this project; however, the important part of this is that the CMB is about 2.7 Kelvin above absolute zero. \cite{UCLA}
 
 \paragraph{}
 
@@ -127,7 +141,7 @@ The language of choice was Python 2.7. Using this I was able to start work on co
 
 \paragraph{}
 
-The first step was to gather all the necessary data, as well as import all the necessary packages. 
+I chose to use Jupyter Notebook as my platform to code on. The first step was to gather all the necessary data, as well as import all the necessary packages. 
 
 \lstset{
 	language=Python,
@@ -142,7 +156,9 @@ The first step was to gather all the necessary data, as well as import all the n
 	identifierstyle=\color{blue},
 	stringstyle=\color{red},
 	commentstyle=\itshape\color{lime},
+	basewidth=0.55em,
 }
+\begin{lstfloat}
 \begin{lstlisting}[caption={Setting up}, captionpos=b]
 import camb
 import matplotlib
@@ -153,9 +169,18 @@ import ipywidgets as widgets
 
 params = camb.read_ini('camb_interface/camb_params.ini')
 \end{lstlisting}
+\end{lstfloat}
 
-This imported the primary packages that I needed in order to make the graph and have it actually function. CAMB is Code for Anisotropies in the Microwave Background
+\paragraph{}
+This imported the primary packages that I needed in order to make the graph and have it actually function. CAMB is Code for Anisotropies in the Microwave Background and is used for calculating many things within cosmology. It just so happens to also use Python as the main code. Matplot was necessary to have a way to draw the graph. NumPy was used to manipulate the data from CAMB and pass it on to Matplot to use in the formation of the graph. IPyWidgets was to create the interactive controls to vary the values of the graph and output the changes in real time.
 
+\paragraph{}
+
+The next step was to create a function that would be called and "interacted" with. I defined this first run as "camb\_plot\_tt", and also defined the values that I would have available to change; each of the "om\_h2" represent their respective energy densities, with om standing for Omega, h2 being Planck's constant squared, and with the letter corresponding to its respective object: b for baryons, c for dark matter, nu for neutrinos.
+
+\paragraph{}
+
+\begin{lstfloat}
 \begin{lstlisting}[caption={Initialising the first plot}, captionpos=b]
 %matplotlib inline
 def camb_plot_tt(ombh2, omch2, omnuh2):
@@ -178,7 +203,16 @@ def camb_plot_tt(ombh2, omch2, omnuh2):
     plt.show()
 
 \end{lstlisting}
+\end{lstfloat}
 
+%\paragraph{}
+
+Here I set the initial values for each of the three variables as the defaults present within the CAMB data. By assigning variables in Python, I was able to save some time and avoid having to rewrite too much. 'TxT' was taken from the array and contained all the data points for plotting the TT CAMB graph. Once I assigned reasonable limits for the axes and added a handy feature to save the future plot as a pdf file, I moved on to figuring out how to create the interactive sliders for the three variables.
+
+%\paragraph{}
+
+
+\begin{lstfloat}
 \begin{lstlisting}[caption={Creating the first plot}, captionpos=b]
 params = camb.read_ini('camb_interface/camb_params.ini')
 interact(camb_plot_tt,
@@ -186,21 +220,122 @@ interact(camb_plot_tt,
          omch2=widgets.FloatSlider(value=params.omch2, min=0, max=1, step=0.001, readout_format='.5f'),
          omnuh2=widgets.FloatSlider(value=params.omnuh2, min=0, max=1, step=0.001, readout_format='.5f'));
 \end{lstlisting}
+\end{lstfloat}
+
+\paragraph{}
+
+By using the floatsliders present in iPywidgets, I was able to assign the minimum and maximum values for the variables and also assign an appropriate step value of 0.001. The readout format was chosen specifically to avoid visually truncating the value of the Omeganu value, as it's very small at default.
+
+\paragraph{}
+
+Running these three cells in sequence created the graph you see in figure \ref{fig:TT}, which is a near perfect match to the plot I saw during my initial research. With this now functioning program, I set about checking what happens when I change the values of the variables.
+
+\paragraph{}
+
+Initially however, I discovered a flaw in my programming. Because I had constrained $\Omega$\textsubscript{$\Lambda$}, this meant that its value was completely fixed; the total energy density $\Omega$\textsubscript{total} has to equal 1 because it is comprised of ratios, but in my simulator, you can go beyond that and end up breaking the simulator. This same error occurs if variables are changed too quickly.
+
+\paragraph{}
+
+Regardless, I was able to get a working version of the simulator, and decided to plot the EE and TE values to see that they also matched the ones seen on the Lambda website.
 
 \label{sec:template}
 
 \begin{figure}[t]
   \begin{center}
-  \includegraphics{Cl-TT-vs-l.pdf}
+  \includegraphics{2Cl-TT-vs-l.pdf}
   \caption{Scalar Non-lensed CMB Power Spectrum TT} 
-  \label{fig:test}
+  \label{fig:TT}
   \end{center}
 \end{figure}
+
+\chapter{Results}
+
+I chose to alter each variable individually, one at a time, in order to be sure that that specific variable was responsible for the change in the graph.
+
+\paragraph{}
+
+My predictions were mainly these:
+\paragraph{}
+Increasing $\Omega$\textsubscript{b} would result in the graph becoming more "smeared", causing the peaks to shrink and become less defined, as more regular matter would mean there are many more minute interactions occurring and thus muddying the spectrum.
+\paragraph{}
+Increasing $\Omega$\textsubscript{c} would result in the graph growing in intensity, as dark matter is much more massive than regular matter, and so I expect the fluctuations to also increase alongside the increase in dark matter.
+\paragraph{}
+Increasing $\Omega$\textsubscript{$\nu$} would also result in a smearing of the graph, and a reduction in the amplitudes, but not for the same reasons as with baryonic matter; neutrinos are incredibly light and interact with very little, meaning that an increase in neutrinos would result in there being less room within each measured multipole for dark  matter or baryonic matter. Essentially, neutrinos would add what could be thought of as "empty space" between particles that would otherwise interact.
+
+\paragraph{}
+
+The most notable thing is that past a certain point, increases in value for each variable have less and less effect on the graph. There appears to be a point at which the graph seemingly stops changing. I assume this is due to my constrained $\Omega$\textsubscript{$\Lambda$} not allowing any further changes to occur. However, the immediate effects are visible from even very minute changes to each variable.
+
+\begin{figure}[t]
+	\begin{center}
+	\includegraphics{3Cl-TT-vs-l}
+	\caption{TT Spectrum with biased $\Omega$\textsubscript{b}}
+	\label{fig:bbias}
+	\end{center}
+\end{figure}
+
+\paragraph{}
+
+Strangely, for baryonic matter, my prediction was only half wrong. In figure \ref{fig:bbias} the amplitudes of the second and third peaks became heavily smeared, as expected, but the first peak amplitude rose well past the y-limit I had assigned in my code. I cannot say as to why that is the case. Interestingly, the dipole peak seems to have also shifted to around $\ell$$\approx$300, suggesting that the corresponding angle has also gone down below 1$^\circ$.
+
+\paragraph{}
+
+\begin{figure}
+	\begin{center}
+	\includegraphics{4Cl-TT-vs-l}
+	\caption{TT Spectrum with biased $\Omega$\textsubscript{c}}
+	\label{fig:cbias}
+	\end{center}
+\end{figure}
+
+For dark matter, this test also went against my prediction entirely. Figure \ref{fig:cbias} shows that increasing the dark matter actually greatly lowered the amplitudes of all the peaks. However, and quite notably, it has not smeared the graph like the baryonic change. The peaks are still quite well defined, and only their amplitudes have shrunk. This suggests that this ends up greatly reducing the anisotropy, and thus the temperature fluctuations. Additionally, the two most well-defined peaks remain at $\ell$$\approx$200 and the third peak which we know from our preliminary research to be the dark matter peak; considering it is the amount of dark matter we have increased in this simulation, this is a very logical outcome.
+
+\begin{figure}
+	\begin{center}
+	\includegraphics{5Cl-TT-vs-l}
+	\caption{TT Spectrum with biased $\Omega$\textsubscript{$\nu$}}
+	\label{fig:vbias}
+	\end{center}
+\end{figure}
+
+\paragraph{}
+
+Figure \ref{fig:vbias} shows the neutrino biased simulation to be quite similar in results to the the dark matter simulation initially, however, the peaks are not as well defined, indicating that the graph has indeed been smeared and smoothed, matching my initial prediction. This was the particular simulation I was interested in doing, as it had been absent from the two simulators mentioned in the introduction to this document, and it shows that neutrino energy density is as impactful and important to the composition of the universe as the three most considered values for baryonic matter, dark matter and dark energy.
+
+\paragraph{}
+
+Comparing the three graphs shows that biasing $\Omega$\textsubscript{b} creates the most noticeable change, and more specifically, that it hugely increases the temperature fluctuations at the lower values of $\ell$, as well as moving the maximum of the largest first peak to be at a slightly higher value of $\ell$ compared to the other two graphs. In figure \ref{fig:bbias}, the first peak exceeds the maximum limit on the graph; I predict it reaches at least 10000$\mu$K$^2$, meaning that the real temperature fluctuation is $\sim$0.1$\mu$K, which is a very significant anistropy. 
+\paragraph{}
+One could infer what sort of consequences may arise on a universal scale as a result of this, such as how it would affect the rate of expansion, as well as the percentage of accompanying dark matter, dark energy, and neutrinos. Certain other phenomenon such as galaxy cluster lensing would also get affected by fluctuating rates of dark matter, and the size of the galaxy clusters would also change in accordance with the amount of dark matter present in the universe.
+
+%\paragraph{}
+
+
+
+\chapter{Conclusions}
+
+By matching the simulations to observed results, we can figure out precise, allowed values for specific objects and phenomena. Here, most notably, we can see how big of an impact the energy density of neutrinos has on the CMB power spectrum, and indeed, also confirms that neutrinos are not massless.
+
+\paragraph{}
+
+This also means that neutrinos must have a maximum allowed mass. Since energy is related to mass, if their energy density was higher, their mass would also need to be higher. As seen from the simulation, a higher amount of neutrinos would likely start to prevent further reactions from taking place.
+
+\paragraph{}
+
+Additionally, the dark matter result was not expected and shows that an increase in dark matter would result in much lower temperature fluctuations across the CMB, meaning that in turn, the universe could be considered homogeneous and isotropic at slightly smaller scales than what are used now.
+
+\paragraph{}
+
+These rudimentary simulations have shown the possible effects on CMB anisotropy, and subsequently on the distribution of different types of matter within the universe. Though these are mostly hypothetical scenarios, they can be useful to help us to predict the behaviour of certain particles.
+
+\paragraph{}
+
+There is much more that can be factored in that was beyond the scope of this project; the lensing effect along with the alternate forms of the CMB spectrum in the temperature-polarisation cross-spectrum TE, and the polarised spectrum EE. Exploring this further could yield some very interesting results.
 
 %%BIBLIOGRAPHY SECTION
 \begin{singlespace}% Start single space for bibliography
 \bibliographystyle{_abbrvnat_jpe}    
-\bibliography{Surname,bib-aanda,bib-apj,bib-astronj,bib-mnras,bib-stateqm,bib-various} %makes BIBLIOGRAPHY from the listed bib files  
+\bibliography{Dolgich.bib} %makes BIBLIOGRAPHY from the listed bib files  
 \end{singlespace}
 
 \end{document}
